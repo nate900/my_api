@@ -1,0 +1,39 @@
+from netmiko import ConnectHandler
+
+# Define the device parameters
+router = {
+    'device_type': 'cisco_ios',  # Change this based on your device type
+    'host': '10.0.9.1',        # Replace with your device's IP address
+    'username': 'nat',   # Replace with your username
+    'password': 'Wk8m6a2YA8Mh1isomethingih',    # Replace with your password
+    'secret': 'cisco' # Optional: enable password if needed
+}
+
+rasppi = {
+    'device_type': 'linux',
+    'host':'10.0.4.5',
+    'username':'pi',
+    'password':'?!1207RasPi'
+}
+
+# Establish an SSH connection to the device
+try:
+    connection = ConnectHandler(**router)
+    
+    # Enter enable mode if necessary
+    if 'secret' in router:
+        connection.enable()
+
+
+    # Execute a command
+        output = connection.send_command('show running-config')
+
+        # Print the output
+        print(output)
+
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # Disconnect from the device
+    connection.disconnect()
